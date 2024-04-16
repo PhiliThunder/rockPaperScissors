@@ -1,39 +1,7 @@
-/*
-Plan:
-    UI: None, for now
-    Inputs:
-        - Userinput in console for choice of hand
-        - Randomly generated input for computers choice of hand
-    Desired output:
-        - Correct winner announced for each round
-        - Winner of BO3 game announced
-
-Pseudocode:
-    SET starting score of player and computer
-    WHILE starting score of player or computer is below 3    
-        GET user input for new hand
-        SET new computer hand choice
-        Check which player won with wincheck function
-            IF player won
-                THEN give player 1 point and go back to start
-            ELSE IF a tie
-                Go back to start 
-            ELSE
-                Give 1 point to computer and go back to start
-    Wincheck function
-        IF computerchoice and userchoice is the same
-            THEN set wincheck to tie
-        ELSE IF computerchoice is Rock and userchoice is Paper
-            THEN set wincheck to win
-        ELSE IF computerchoice is Rock and userchoice is Scissors
-            THEN set wincheck to loss
-        ...
-            ...
-*/
 const hands = ["ROCK", "PAPER", "SCISSORS"]
 let computerScore = 0;
 let playerScore = 0;
-let playerSelection = "";
+//let playerSelection = "";
 let roundResult = "";
 let computerSelection = "";
 
@@ -44,11 +12,12 @@ function getComputerChoice() {
     return computerSelection;
 }
 //Gets player hand and converts to uppercase
+/*Old method
 function getPlayerChoice() {
     playerSelection = prompt("Write Rock, Paper or Scissors to make your choice: ");
     playerSelection = playerSelection.toUpperCase();
     return playerSelection;
-}
+}*/
 //Checks winner of current hand selections
 function winCheck(playerSelection, computerSelection) {
     roundResult = "";
@@ -64,9 +33,9 @@ function winCheck(playerSelection, computerSelection) {
     return roundResult;
 }
 //Plays one round of RPS
-function playRound() {
+function playRound(event) {
+    const playerSelection = event.target.id.toUpperCase();
     getComputerChoice();
-    getPlayerChoice();
     winCheck(playerSelection, computerSelection);
     if (roundResult === "Win") {
         playerScore++
@@ -80,12 +49,6 @@ function playRound() {
 }
 //Plays a B03 of RPS
 function playGame() {
-    //will implement a B03 loop here later, for now just a 5 round game
-    playRound();
-    playRound();
-    playRound();
-    playRound();
-    playRound();
     if (playerScore > computerScore) {
         console.log(`You won the game! Your score: ${playerScore} | Computers score: ${computerScore}`);
     } else {
@@ -94,3 +57,10 @@ function playGame() {
     playerScore = 0;
     computerScore = 0;
 }
+const rockBtn = document.querySelector("#rock");
+const paperBtn = document.querySelector("#paper");
+const scissorsBtn = document.querySelector("#scissors");
+
+rockBtn.addEventListener("click", playRound);
+paperBtn.addEventListener("click", playRound);
+scissorsBtn.addEventListener("click", playRound);
